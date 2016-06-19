@@ -15,7 +15,6 @@ import /init.cm.rc
 # Include JDCTeam's extra init file
 import /init.jdcteam.rc
 
-
 on early-init
     # Set init and its forked children's oom_adj.
     write /proc/1/oom_score_adj -1000
