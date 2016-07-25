@@ -29,22 +29,16 @@
 class UnwindMap : public BacktraceMap {
 public:
   UnwindMap(pid_t pid);
+  virtual ~UnwindMap();
+
+  virtual bool Build();
 
   unw_map_cursor_t* GetMapCursor() { return &map_cursor_; }
 
 protected:
+  virtual bool GenerateMap();
+
   unw_map_cursor_t map_cursor_;
-};
-
-class UnwindMapRemote : public UnwindMap {
-public:
-  UnwindMapRemote(pid_t pid);
-  virtual ~UnwindMapRemote();
-
-  bool Build() override;
-
-private:
-  bool GenerateMap();
 };
 
 class UnwindMapLocal : public UnwindMap {
@@ -52,12 +46,12 @@ public:
   UnwindMapLocal();
   virtual ~UnwindMapLocal();
 
-  bool Build() override;
+  virtual bool Build();
 
-  void FillIn(uintptr_t addr, backtrace_map_t* map) override;
+  virtual void FillIn(uintptr_t addr, backtrace_map_t* map);
 
-private:
-  bool GenerateMap();
+protected:
+  virtual bool GenerateMap();
 
   bool map_created_;
 };
